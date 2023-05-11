@@ -62,13 +62,13 @@ const InnerTimeRange = ({
         partialMargin
     )
 
-    const data = useMemo(
-        () =>
-            _data
-                .map(data => ({ ...data, date: new Date(`${data.day}T00:00:00`) }))
-                .sort((left, right) => left.day.localeCompare(right.day)),
-        [_data]
-    )
+    const data = useMemo(() => {
+        const orderedDates = _data
+            .map(data => ({ ...data, date: new Date(`${data.day}T00:00:00`) }))
+            .sort((left, right) => left.day.localeCompare(right.day))
+        orderedDates[orderedDates.length - 1].date.setMinutes(1)
+        return orderedDates
+    }, [_data])
 
     const theme = useTheme()
     const colorScaleFn = useColorScale({ data, minValue, maxValue, colors, colorScale })
